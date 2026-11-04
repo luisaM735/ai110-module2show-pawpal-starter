@@ -2,15 +2,33 @@
 
 ## 1. System Design
 
+### Core User Actions
+
+The PawPal+ system enables pet owners to perform three core actions:
+
+1. **Add a Pet**: Register a new pet with details like name, species, breed, and age. This creates a profile that can hold multiple care tasks.
+
+2. **Schedule a Task**: Create care activities (walks, feeding, medications, grooming, enrichment) with attributes including scheduled time, duration, priority level, and recurrence frequency (one-time, daily, weekly).
+
+3. **View Today's Schedule**: Display an organized daily plan showing all tasks sorted by time, with visual indicators for priority levels and warnings for scheduling conflicts.
+
 **a. Initial design**
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
+The initial UML design includes four core classes with clear separation of concerns:
+
+1. **Task** (Python dataclass): Represents a single pet care activity. Holds attributes for description, scheduled_time (HH:MM format), duration_minutes, priority (low/medium/high), frequency (once/daily/weekly), completion status, pet_name, and scheduled_date. Methods include `mark_complete()` and `get_next_occurrence()` for recurring task support.
+
+2. **Pet** (Python dataclass): Stores pet details (name, species, breed, age) and maintains a list of Task objects. Methods include `add_task()`, `remove_task()`, and `get_tasks()` to manage the pet's activities.
+
+3. **Owner**: Manages multiple Pet objects. Contains the owner's name and a list of pets. Methods include `add_pet()`, `remove_pet()`, `get_pet()`, and `get_all_tasks()` to aggregate tasks across all pets.
+
+4. **Scheduler**: The "brain" of the system that operates on an Owner's data. It retrieves, sorts, filters, and manages tasks. Methods include `get_todays_tasks()`, `sort_by_time()`, `filter_by_status()`, `filter_by_pet()`, `detect_conflicts()`, `handle_recurring_task()`, and `mark_task_complete()`.
+
+The relationships are: Owner owns multiple Pets (1-to-many), Pet has multiple Tasks (1-to-many), and Scheduler manages one Owner (1-to-1).
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+During skeleton creation, I added the `scheduled_date` attribute to Task. This was necessary because the original design only had `scheduled_time` (HH:MM), but to properly support recurring tasks and daily scheduling, we need to know which date the task is for. This enables filtering "today's tasks" and calculating the next occurrence for daily/weekly recurring tasks.
 
 ---
 
