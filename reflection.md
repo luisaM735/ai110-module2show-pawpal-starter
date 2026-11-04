@@ -64,13 +64,28 @@ This tradeoff is reasonable because:
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+AI tools were used throughout this project in several key ways:
+
+1. **Design Brainstorming**: Started by describing the pet care app scenario and asking for a Mermaid.js UML class diagram. This helped visualize relationships between Owner, Pet, Task, and Scheduler before writing code.
+
+2. **Code Generation**: Used AI to generate class skeletons based on the UML design, then incrementally filled in method implementations. The prompt "Based on my skeletons, how should the Scheduler retrieve all tasks from the Owner's pets?" helped design the data flow.
+
+3. **Test Generation**: Asked AI to draft pytest test cases covering "happy paths" and edge cases. The prompt "What are the most important edge cases to test for a pet scheduler with sorting and recurring tasks?" identified scenarios I hadn't considered.
+
+4. **Documentation**: AI helped generate docstrings and format README sections consistently.
+
+The most helpful prompts were specific and contextual, like attaching the current `pawpal_system.py` file and asking for targeted improvements rather than open-ended questions.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+One moment where I modified an AI suggestion: The initial UML diagram suggested a complex `TaskManager` class separate from the `Scheduler`. I rejected this and kept a simpler design where `Scheduler` handles all task operations directly through the `Owner`. 
+
+I evaluated this by considering:
+1. The project scope (a single-user pet care app, not a multi-tenant system)
+2. The principle of keeping designs as simple as possible while meeting requirements
+3. The fact that adding another layer would complicate the code without providing clear benefits for this use case
+
+I verified my decision by implementing the simpler design and confirming that all required features (sorting, filtering, conflicts, recurrence) could be achieved without the extra abstraction.
 
 ---
 
@@ -111,12 +126,28 @@ Edge cases I would test next if given more time:
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+I'm most satisfied with the **modular system design**. By separating concerns clearly (Task holds data, Pet owns tasks, Owner aggregates pets, Scheduler operates on the data), the code remained clean and testable. The UML-first approach paid off - the final implementation closely matches the original design, with only minor additions (like `scheduled_date`).
+
+The **CLI-first workflow** was also effective. By verifying logic in `main.py` before connecting to Streamlit, I caught issues early and had a reliable demo script to show the system working without UI dependencies.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+If I had another iteration, I would:
+
+1. **Add duration-based conflict detection**: Currently only exact time matches are flagged. Overlapping durations (e.g., a 30-min task at 09:00 vs. a task at 09:15) aren't detected.
+
+2. **Implement priority-based scheduling**: The scheduler sorts by time but could also consider priority for suggesting optimal task ordering.
+
+3. **Add data persistence**: Currently all data lives in `st.session_state` and disappears on page refresh. Adding SQLite or JSON file storage would make the app practical.
+
+4. **Improve input validation**: The system trusts all inputs. Adding validation for time formats, reasonable durations, and duplicate task detection would make it more robust.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+The most important thing I learned is that **AI works best as a collaborator, not a replacement for design thinking**. The AI could generate code quickly, but I needed to:
+- Define clear requirements and constraints first
+- Evaluate suggestions against the project's actual needs
+- Verify generated code with tests and manual review
+- Make judgment calls about complexity vs. simplicity
+
+Being the "lead architect" means using AI to accelerate implementation while maintaining ownership of design decisions and quality standards.

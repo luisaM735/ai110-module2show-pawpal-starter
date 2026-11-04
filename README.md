@@ -1,28 +1,28 @@
-# PawPal+ (Module 2 Project)
+# PawPal+ 🐾
 
-You are building **PawPal+**, a Streamlit app that helps a pet owner plan care tasks for their pet.
+A smart pet care management system that helps pet owners keep their furry friends happy and healthy by tracking daily routines, scheduling tasks, and organizing care activities.
 
-## Scenario
+## ✨ Features
 
-A busy pet owner needs help staying consistent with pet care. They want an assistant that can:
+- **Multi-Pet Support**: Manage multiple pets with individual profiles (name, species, breed, age)
+- **Task Scheduling**: Create care tasks with time, duration, priority levels, and recurrence
+- **Smart Scheduling**: Automatic sorting by time, filtering by pet/status, conflict detection
+- **Recurring Tasks**: Daily and weekly tasks automatically regenerate when completed
+- **Conflict Warnings**: Visual alerts when multiple tasks are scheduled at the same time
+- **Progress Tracking**: See completion status with visual progress indicators
 
-- Track pet care tasks (walks, feeding, meds, enrichment, grooming, etc.)
-- Consider constraints (time available, priority, owner preferences)
-- Produce a daily plan and explain why it chose that plan
+## 🏗️ System Architecture
 
-Your job is to design the system first (UML), then implement the logic in Python, then connect it to the Streamlit UI.
+The system uses a modular OOP design with four core classes:
 
-## What you will build
+- **Task** (dataclass): Individual care activities with scheduling metadata
+- **Pet** (dataclass): Pet profiles containing a list of tasks
+- **Owner**: Manages multiple pets and aggregates all tasks
+- **Scheduler**: The "brain" that sorts, filters, and manages tasks
 
-Your final app should:
+See `diagrams/uml_final.mmd` for the complete UML class diagram.
 
-- Let a user enter basic owner + pet info
-- Let a user add/edit tasks (duration + priority at minimum)
-- Generate a daily schedule/plan based on constraints and priorities
-- Display the plan clearly (and ideally explain the reasoning)
-- Include tests for the most important scheduling behaviors
-
-## Getting started
+## 🚀 Getting Started
 
 ### Setup
 
@@ -186,12 +186,32 @@ The PawPal+ scheduler implements intelligent task management through the followi
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+### Using the Streamlit App (`streamlit run app.py`)
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. **Set up your profile**: Enter your name in the sidebar. The app tracks total pets and tasks.
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+2. **Add your pets**: Navigate to the "🐕 Manage Pets" tab. Enter pet details (name, species, breed, age) and click "Add Pet". Your pets appear in expandable cards showing their info and task count.
+
+3. **Schedule tasks**: Go to the "📋 Tasks" tab. Select a pet, enter task details (description, time, duration, priority, frequency), and click "Add Task". Tasks appear with status icons (⬜ pending, ✅ complete) and priority colors (🔴 high, 🟡 medium, 🟢 low).
+
+4. **View today's schedule**: The "📅 Today's Schedule" tab shows all tasks sorted by time. Use filters to view by pet or completion status. Conflict warnings appear if multiple tasks share the same time slot.
+
+5. **Complete tasks**: Click "Mark Complete" on any task. For recurring tasks (daily/weekly), a new task is automatically created for the next occurrence.
+
+6. **Track progress**: The Daily Summary section shows total/completed/pending counts with a visual progress bar.
+
+### Using the CLI Demo (`python main.py`)
+
+Run the demo script to see the system in action without the UI:
+
+```bash
+python main.py
+```
+
+This demonstrates:
+- Creating an owner with multiple pets
+- Adding tasks out of order (tests sorting)
+- Generating a sorted daily schedule
+- Detecting time conflicts
+- Filtering tasks by pet
+- Marking tasks complete and seeing recurring task generation
