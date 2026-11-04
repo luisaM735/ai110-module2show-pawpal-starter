@@ -1,0 +1,47 @@
+classDiagram
+    class Task {
+        +str description
+        +str scheduled_time
+        +int duration_minutes
+        +str priority
+        +str frequency
+        +bool is_complete
+        +str pet_name
+        +mark_complete() None
+        +get_next_occurrence() Task
+    }
+
+    class Pet {
+        +str name
+        +str species
+        +str breed
+        +int age
+        +list~Task~ tasks
+        +add_task(task: Task) None
+        +remove_task(description: str) bool
+        +get_tasks() list~Task~
+    }
+
+    class Owner {
+        +str name
+        +list~Pet~ pets
+        +add_pet(pet: Pet) None
+        +remove_pet(name: str) bool
+        +get_pet(name: str) Pet
+        +get_all_tasks() list~Task~
+    }
+
+    class Scheduler {
+        +Owner owner
+        +get_todays_tasks() list~Task~
+        +sort_by_time(tasks: list~Task~) list~Task~
+        +filter_by_status(tasks: list~Task~, complete: bool) list~Task~
+        +filter_by_pet(tasks: list~Task~, pet_name: str) list~Task~
+        +detect_conflicts(tasks: list~Task~) list~str~
+        +handle_recurring_task(task: Task) Task
+        +mark_task_complete(pet_name: str, description: str) bool
+    }
+
+    Owner "1" --> "*" Pet : owns
+    Pet "1" --> "*" Task : has
+    Scheduler "1" --> "1" Owner : manages
