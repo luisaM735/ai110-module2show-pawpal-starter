@@ -44,14 +44,71 @@ pip install -r requirements.txt
 
 ## 🖥️ Sample Output
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
+Running `python main.py` produces the following output:
 
 ```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
+🐾 PawPal+ System Demo 🐾
+==================================================
+
+👤 Created owner: Jordan
+🐕 Added pet: Mochi (Golden Retriever, 3 years old)
+🐈 Added pet: Whiskers (Tabby, 5 years old)
+
+📋 Added 4 tasks for Mochi
+📋 Added 3 tasks for Whiskers
+
+==================================================
+  Today's Schedule for Jordan
+==================================================
+  ○ 08:00 — Morning walk (30 min)
+      🔴 HIGH | Pet: Mochi [daily]
+  ○ 09:00 — Feeding (10 min)
+      🔴 HIGH | Pet: Mochi [daily]
+  ○ 09:00 — Feeding (5 min)
+      🔴 HIGH | Pet: Whiskers [daily]
+  ○ 10:00 — Litter box cleaning (10 min)
+      🟡 MEDIUM | Pet: Whiskers [daily]
+  ○ 14:00 — Play time (20 min)
+      🟡 MEDIUM | Pet: Mochi [daily]
+  ○ 15:00 — Grooming (15 min)
+      🟢 LOW | Pet: Whiskers [weekly]
+  ○ 18:00 — Evening walk (30 min)
+      🔴 HIGH | Pet: Mochi [daily]
+==================================================
+
+⚠️  SCHEDULING CONFLICTS DETECTED:
+   Conflict at 09:00 on 2026-11-04: 'Feeding' (Mochi), 'Feeding' (Whiskers)
+
+🐕 Tasks for Mochi only:
+   08:00 — Morning walk
+   09:00 — Feeding
+   14:00 — Play time
+   18:00 — Evening walk
+
+📝 Pending tasks (not complete):
+   7 tasks remaining
+
+✅ Marking 'Morning walk' as complete...
+
+==================================================
+  Remaining Tasks for Today
+==================================================
+  ○ 09:00 — Feeding (10 min)
+      🔴 HIGH | Pet: Mochi [daily]
+  ○ 09:00 — Feeding (5 min)
+      🔴 HIGH | Pet: Whiskers [daily]
+  ○ 10:00 — Litter box cleaning (10 min)
+      🟡 MEDIUM | Pet: Whiskers [daily]
+  ○ 14:00 — Play time (20 min)
+      🟡 MEDIUM | Pet: Mochi [daily]
+  ○ 15:00 — Grooming (15 min)
+      🟢 LOW | Pet: Whiskers [weekly]
+  ○ 18:00 — Evening walk (30 min)
+      🔴 HIGH | Pet: Mochi [daily]
+==================================================
+
+📅 Recurring tasks auto-created for 2026-11-05:
+   08:00 — Morning walk (Mochi)
 ```
 
 ## 🧪 Testing PawPal+
