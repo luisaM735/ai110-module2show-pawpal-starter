@@ -129,14 +129,16 @@ Sample test output:
 
 ## 📐 Smarter Scheduling
 
-> Fill in once you've implemented scheduling logic.
+The PawPal+ scheduler implements intelligent task management through the following features:
 
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting | `Scheduler.sort_by_time()` | Sorts tasks chronologically by scheduled_time (HH:MM format) using Python's sorted() with a lambda key |
+| Filter by status | `Scheduler.filter_by_status()` | Returns only completed or pending tasks based on is_complete flag |
+| Filter by pet | `Scheduler.filter_by_pet()` | Returns tasks for a specific pet, useful for multi-pet households |
+| Conflict detection | `Scheduler.detect_conflicts()` | Detects tasks scheduled at the exact same time using a hash map (O(n) complexity) |
+| Recurring tasks | `Task.get_next_occurrence()`, `Scheduler.handle_recurring_task()` | Automatically creates the next occurrence when a daily/weekly task is marked complete using timedelta calculations |
+| Today's tasks | `Scheduler.get_todays_tasks()` | Filters all tasks to show only those scheduled for the current date |
 
 ## 📸 Demo Walkthrough
 

@@ -36,13 +36,27 @@ During skeleton creation, I added the `scheduled_date` attribute to Task. This w
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+The scheduler considers the following constraints:
+
+1. **Time**: Tasks are sorted chronologically by their `scheduled_time` (HH:MM format) using Python's `sorted()` with a lambda key. This ensures the daily schedule presents tasks in the order they should be performed.
+
+2. **Date**: Tasks are filtered by `scheduled_date` to show only today's tasks, preventing future/past tasks from cluttering the current view.
+
+3. **Completion Status**: Tasks can be filtered to show pending or completed items, helping owners focus on what still needs to be done.
+
+4. **Pet Association**: Tasks can be filtered by pet name, allowing owners with multiple pets to view schedules separately.
+
+Time was prioritized as the primary sorting constraint because pet care is inherently time-sensitive (feeding times, medication schedules, walk routines).
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+The conflict detection algorithm only checks for **exact time matches**, not overlapping durations. For example, two tasks at "09:00" are flagged as conflicts, but a 30-minute task at "09:00" and another task at "09:15" are not detected as overlapping.
+
+This tradeoff is reasonable because:
+1. It keeps the algorithm simple and fast (O(n) with a hash map)
+2. Pet owners typically schedule tasks at distinct times anyway
+3. The visual schedule already shows durations, so owners can spot near-conflicts manually
+4. Adding duration-based overlap detection would significantly increase complexity for minimal real-world benefit in a pet care context
 
 ---
 
