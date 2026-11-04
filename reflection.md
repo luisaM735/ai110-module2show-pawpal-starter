@@ -78,13 +78,32 @@ This tradeoff is reasonable because:
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+The test suite covers 22 test cases organized by class:
+
+1. **Task behaviors**: Marking tasks complete, generating next occurrences for daily/weekly recurrence, verifying one-time tasks don't recur
+2. **Pet behaviors**: Adding/removing tasks, automatic pet_name assignment when tasks are added
+3. **Owner behaviors**: Adding pets, retrieving pets by name, aggregating tasks across all pets
+4. **Scheduler behaviors**: Sorting by time, filtering by status/pet, conflict detection, recurring task handling, getting today's tasks
+5. **Edge cases**: Empty pets (no tasks), empty owners (no pets), non-existent pet lookups, marking tasks for missing pets
+
+These tests are important because they verify:
+- Core CRUD operations work correctly
+- The "smart" scheduling features (sorting, filtering, conflicts) behave as expected
+- Edge cases don't cause crashes or unexpected behavior
+- Recurring task logic correctly creates future tasks
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+**Confidence Level: 4/5 stars**
+
+The test suite provides strong coverage of the core functionality and common edge cases. The 22 tests all pass consistently, and the CLI demo script (`main.py`) demonstrates the system working end-to-end.
+
+Edge cases I would test next if given more time:
+- **Performance**: How does the scheduler handle 1000+ tasks?
+- **Duration overlap**: Tasks that start within another task's duration
+- **Concurrent modifications**: Adding/removing tasks while iterating
+- **Date edge cases**: Tasks scheduled at midnight, spanning multiple days
+- **Input validation**: Invalid time formats, negative durations, empty descriptions
 
 ---
 

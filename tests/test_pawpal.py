@@ -245,3 +245,90 @@ class TestScheduler:
         assert len(tomorrow_tasks) == 1
         assert tomorrow_tasks[0].description == "Morning walk"
         assert tomorrow_tasks[0].is_complete is False
+    
+    def test_get_todays_tasks_filters_by_date(self):
+        """Verify get_todays_tasks only returns tasks for today."""
+        owner = Owner("Jordan")
+        today = date.today()
+        tomorrow = today + timedelta(days=1)
+        
+        pet = Pet(name="Mochi", species="dog")
+        pet.add_task(Task("Today task", "08:00", 30, scheduled_date=today))
+        pet.add_task(Task("Tomorrow task", "08:00", 30, scheduled_date=tomorrow))
+        owner.add_pet(pet)
+        
+        scheduler = Scheduler(owner)
+        todays_tasks = scheduler.get_todays_tasks()
+        
+        assert len(todays_tasks) == 1
+        assert todays_tasks[0].description == "Today task"
+    
+    def test_filter_by_pet(self):
+        """Verify filtering by pet name works correctly."""
+        owner = Owner("Jordan")
+        
+        mochi = Pet(name="Mochi", species="dog")
+        mochi.add_task(Task("Walk", "08:00", 30))
+        
+        whiskers = Pet(name="Whiskers", species="cat")
+        whiskers.add_task(Task("Feed", "09:00", 5))
+        
+        owner.add_pet(mochi)
+        owner.add_pet(whiskers)
+        
+        scheduler = Scheduler(owner)
+        all_tasks = owner.get_all_tasks()
+        mochi_tasks = scheduler.filter_by_pet(all_tasks, "Mochi")
+        
+        assert len(mochi_tasks) == 1
+        assert mochi_tasks[0].pet_name == "Mochi"
+    
+    def test_no_conflicts_different_times(self):
+        """Verify no conflicts when tasks are at different times."""
+        owner = Owner("Jordan")
+        today = date.today()
+        
+        pet = Pet(name="Mochi", species="dog")
+        pet.add_task(Task("Walk", "08:00", 30, scheduled_date=today))
+        pet.add_task(Task("Feed", "09:00", 10, scheduled_date=today))
+        owner.add_pet(pet)
+        
+        scheduler = Scheduler(owner)
+        conflicts = scheduler.detect_conflicts(owner.get_all_tasks())
+        
+        assert len(conflicts) == 0
+    
+    def test_pet_with_no_tasks(self):
+        """Verify pet with no tasks returns empty list."""
+        pet = Pet(name="Mochi", species="dog")
+        
+        tasks = pet.get_tasks()
+        
+        assert tasks == []
+        assert len(pet.tasks) == 0
+    
+    def test_owner_with_no_pets(self):
+        """Verify owner with no pets returns empty task list."""
+        owner = Owner("Jordan")
+        
+        all_tasks = owner.get_all_tasks()
+        
+        assert all_tasks == []
+    
+    def test_get_pet_not_found(self):
+        """Verify get_pet returns None for non-existent pet."""
+        owner = Owner("Jordan")
+        owner.add_pet(Pet(name="Mochi", species="dog"))
+        
+        result = owner.get_pet("NonExistent")
+        
+        assert result is None
+    
+    def test_mark_task_complete_nonexistent_pet(self):
+        """Verify marking task for non-existent pet returns False."""
+        owner = Owner("Jordan")
+        scheduler = Scheduler(owner)
+        
+        result = scheduler.mark_task_complete("NonExistent", "Walk")
+        
+        assert result is False

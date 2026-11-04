@@ -115,17 +115,61 @@ Running `python main.py` produces the following output:
 
 ```bash
 # Run the full test suite:
-pytest
+python -m pytest tests/test_pawpal.py -v
 
-# Run with coverage:
-pytest --cov
+# Run with coverage (requires pytest-cov):
+python -m pytest --cov=pawpal_system tests/
 ```
 
-Sample test output:
+### Test Coverage
+
+The test suite covers 22 test cases across 5 categories:
+
+- **Task tests**: mark_complete, daily/weekly recurrence, one-time tasks
+- **Pet tests**: add/remove tasks, pet name assignment
+- **Owner tests**: add pets, get pet by name, aggregate all tasks
+- **Scheduler tests**: sort by time, filter by status/pet, conflict detection, recurring task handling
+- **Edge cases**: empty pet/owner, non-existent pet lookup, marking tasks for missing pets
+
+### Sample test output:
 
 ```
-# Paste your pytest output here
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+collecting ... collected 22 items
+
+tests/test_pawpal.py::TestTask::test_mark_complete_changes_status PASSED [  4%]
+tests/test_pawpal.py::TestTask::test_get_next_occurrence_daily PASSED    [  9%]
+tests/test_pawpal.py::TestTask::test_get_next_occurrence_weekly PASSED   [ 13%]
+tests/test_pawpal.py::TestTask::test_get_next_occurrence_once_returns_none PASSED [ 18%]
+tests/test_pawpal.py::TestPet::test_add_task_increases_count PASSED      [ 22%]
+tests/test_pawpal.py::TestPet::test_add_task_sets_pet_name PASSED        [ 27%]
+tests/test_pawpal.py::TestPet::test_remove_task PASSED                   [ 31%]
+tests/test_pawpal.py::TestPet::test_remove_nonexistent_task_returns_false PASSED [ 36%]
+tests/test_pawpal.py::TestOwner::test_add_pet PASSED                     [ 40%]
+tests/test_pawpal.py::TestOwner::test_get_pet_by_name PASSED             [ 45%]
+tests/test_pawpal.py::TestOwner::test_get_all_tasks_aggregates_from_all_pets PASSED [ 50%]
+tests/test_pawpal.py::TestScheduler::test_sort_by_time PASSED            [ 54%]
+tests/test_pawpal.py::TestScheduler::test_filter_by_status_incomplete PASSED [ 59%]
+tests/test_pawpal.py::TestScheduler::test_detect_conflicts_same_time PASSED [ 63%]
+tests/test_pawpal.py::TestScheduler::test_mark_task_complete_handles_recurrence PASSED [ 68%]
+tests/test_pawpal.py::TestScheduler::test_get_todays_tasks_filters_by_date PASSED [ 72%]
+tests/test_pawpal.py::TestScheduler::test_filter_by_pet PASSED           [ 77%]
+tests/test_pawpal.py::TestScheduler::test_no_conflicts_different_times PASSED [ 81%]
+tests/test_pawpal.py::TestScheduler::test_pet_with_no_tasks PASSED       [ 86%]
+tests/test_pawpal.py::TestScheduler::test_owner_with_no_pets PASSED      [ 90%]
+tests/test_pawpal.py::TestScheduler::test_get_pet_not_found PASSED       [ 95%]
+tests/test_pawpal.py::TestScheduler::test_mark_task_complete_nonexistent_pet PASSED [100%]
+
+============================== 22 passed in 0.03s ==============================
 ```
+
+### Confidence Level: ⭐⭐⭐⭐ (4/5)
+
+The test suite provides strong coverage of core functionality and edge cases. Additional tests that would improve confidence:
+- Concurrent task modifications
+- Very large numbers of tasks (performance testing)
+- Overlapping time duration conflicts (currently only exact time matches)
 
 ## 📐 Smarter Scheduling
 
