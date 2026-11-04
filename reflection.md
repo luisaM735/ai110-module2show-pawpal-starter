@@ -66,13 +66,9 @@ This tradeoff is reasonable because:
 
 AI tools were used throughout this project in several key ways:
 
-1. **Design Brainstorming**: Started by describing the pet care app scenario and asking for a Mermaid.js UML class diagram. This helped visualize relationships between Owner, Pet, Task, and Scheduler before writing code.
+1. **Code Generation**: Used AI to generate class skeletons based on the UML design, then incrementally filled in method implementations. The prompt "Based on my skeletons, how should the Scheduler retrieve all tasks from the Owner's pets?" helped design the data flow.
 
-2. **Code Generation**: Used AI to generate class skeletons based on the UML design, then incrementally filled in method implementations. The prompt "Based on my skeletons, how should the Scheduler retrieve all tasks from the Owner's pets?" helped design the data flow.
-
-3. **Test Generation**: Asked AI to draft pytest test cases covering "happy paths" and edge cases. The prompt "What are the most important edge cases to test for a pet scheduler with sorting and recurring tasks?" identified scenarios I hadn't considered.
-
-4. **Documentation**: AI helped generate docstrings and format README sections consistently.
+2. **Test Generation**: Asked AI to draft pytest test cases covering "happy paths" and edge cases. The prompt "What are the most important edge cases to test for a pet scheduler with sorting and recurring tasks?" identified scenarios I hadn't considered.
 
 The most helpful prompts were specific and contextual, like attaching the current `pawpal_system.py` file and asking for targeted improvements rather than open-ended questions.
 
@@ -113,7 +109,7 @@ These tests are important because they verify:
 
 The test suite provides strong coverage of the core functionality and common edge cases. The 22 tests all pass consistently, and the CLI demo script (`main.py`) demonstrates the system working end-to-end.
 
-Edge cases I would test next if given more time:
+Edge cases I would test next:
 - **Performance**: How does the scheduler handle 1000+ tasks?
 - **Duration overlap**: Tasks that start within another task's duration
 - **Concurrent modifications**: Adding/removing tasks while iterating
@@ -132,22 +128,17 @@ The **CLI-first workflow** was also effective. By verifying logic in `main.py` b
 
 **b. What you would improve**
 
-If I had another iteration, I would:
+I would:
 
-1. **Add duration-based conflict detection**: Currently only exact time matches are flagged. Overlapping durations (e.g., a 30-min task at 09:00 vs. a task at 09:15) aren't detected.
+1. **Implement priority-based scheduling**: The scheduler sorts by time but could also consider priority for suggesting optimal task ordering.
 
-2. **Implement priority-based scheduling**: The scheduler sorts by time but could also consider priority for suggesting optimal task ordering.
+2. **Add data persistence**: Currently all data lives in `st.session_state` and disappears on page refresh. Adding SQLite or JSON file storage would make the app practical.
 
-3. **Add data persistence**: Currently all data lives in `st.session_state` and disappears on page refresh. Adding SQLite or JSON file storage would make the app practical.
-
-4. **Improve input validation**: The system trusts all inputs. Adding validation for time formats, reasonable durations, and duplicate task detection would make it more robust.
+3. **Improve input validation**: The system trusts all inputs. Adding validation for time formats, reasonable durations, and duplicate task detection would make it more robust.
 
 **c. Key takeaway**
 
-The most important thing I learned is that **AI works best as a collaborator, not a replacement for design thinking**. The AI could generate code quickly, but I needed to:
+The most important thing I learned is that AI works best as a collaborator, not a replacement for design thinking. The AI could generate code quickly, but I needed to:
 - Define clear requirements and constraints first
 - Evaluate suggestions against the project's actual needs
 - Verify generated code with tests and manual review
-- Make judgment calls about complexity vs. simplicity
-
-Being the "lead architect" means using AI to accelerate implementation while maintaining ownership of design decisions and quality standards.
